@@ -1,7 +1,7 @@
 from random import choice
 from string import ascii_uppercase
 import logging
-import bogglefunction
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -64,7 +64,6 @@ def get_dictionary():
 
 
 
-
 #search function
 def search(path):
     word = path_to_word(path)
@@ -88,6 +87,16 @@ def search(path):
 #end of search function
 
 
+def timeit(method):
+    def timed(*args, **kw):
+        t1 = time.time()
+        result = method(*args, **kw)
+        print '%r %2.2f sec' % (method._name_, time.time() - t1)
+        return result
+
+    return timed
+
+
 #end of functions
 
 
@@ -95,7 +104,7 @@ def search(path):
 
 
 # set grid size
-size = X, Y = 4, 4
+size = X, Y = 16, 16
 
 # create empthy path
 paths = []
@@ -113,7 +122,7 @@ dictionary, stems = get_dictionary()
 
 #search the position in the grid
 for position in grid:
-    logging.info('searching %s' % str(position))
+ #   logging.info('searching %s' % str(position))
     search([position])
 
 
@@ -122,13 +131,23 @@ for position in grid:
 s= ''
 for y in range(Y):
     for x in range(X):
-        s += grid[x,y] + ''
+        s += grid[x,y] + '-'
     s += '\n'
 print s
 
 
 
-#print the different words found
-print [path_to_word(p) for p in paths]
+# the different words found
+result = [path_to_word(p) for p in paths]
+
+#turn into a set to remove duplicates
+print list(set(result))
+
+
+
+
+
+
+
 
 
